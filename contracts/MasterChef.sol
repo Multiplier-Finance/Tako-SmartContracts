@@ -60,12 +60,8 @@ contract MasterChef is Ownable {
 
     // The SUSHI TOKEN!
     SushiToken public sushi;
-    // Block number when bonus SUSHI period ends.
-    uint256 public bonusEndBlock;
     // SUSHI tokens created per block.
     uint256 public sushiPerBlock;
-    // Bonus muliplier for early sushi makers.
-    uint256 public constant BONUS_MULTIPLIER = 10;
     // The migrator contract. It has a lot of power. Can only be set through governance (owner).
     IMigratorChef public migrator;
 
@@ -85,12 +81,10 @@ contract MasterChef is Ownable {
     constructor(
         SushiToken _sushi,
         uint256 _sushiPerBlock,
-        uint256 _startBlock,
-        uint256 _bonusEndBlock
+        uint256 _startBlock
     ) public {
         sushi = _sushi;
         sushiPerBlock = _sushiPerBlock;
-        bonusEndBlock = _bonusEndBlock;
         startBlock = _startBlock;
     }
 
@@ -101,11 +95,6 @@ contract MasterChef is Ownable {
     // Change sushiPerBlock. Can only be called by the owner.
     function setRewardPerBlock(uint256 _value) public onlyOwner() {     
         sushiPerBlock = _value;
-    }
-
-    // Change bonusEndBlock. Can only be called by the owner.
-    function setBonusEndBlock(uint256 _value) public onlyOwner() {     
-        bonusEndBlock = _value;
     }
 
     // Add a new lp to the pool. Can only be called by the owner.
@@ -150,19 +139,6 @@ contract MasterChef is Ownable {
         pool.lpToken = newLpToken;
     }
 
-    // Return reward multiplier over the given _from to _to block.
-    function getMultiplier(uint256 _from, uint256 _to) public view returns (uint256) {
-        if (_to <= bonusEndBlock) {
-            return _to.sub(_from).mul(BONUS_MULTIPLIER);
-        } else if (_from >= bonusEndBlock) {
-            return _to.sub(_from);
-        } else {
-            return bonusEndBlock.sub(_from).mul(BONUS_MULTIPLIER).add(
-                _to.sub(bonusEndBlock)
-            );
-        }
-    }
-
     // View function to see pending SUSHIs on frontend.
     function pendingSushi(uint256 _pid, address _user) external view returns (uint256) {
         PoolInfo storage pool = poolInfo[_pid];
@@ -170,7 +146,7 @@ contract MasterChef is Ownable {
         uint256 accSushiPerShare = pool.accSushiPerShare;
         uint256 lpSupply = pool.lpToken.balanceOf(address(this));
         if (block.number > pool.lastRewardBlock && lpSupply != 0) {
-            uint256 multiplier = getMultiplier(pool.lastRewardBlock, block.number);
+            uint256 multiplier = block.number.sub(pool.lastRewardBlock);
             uint256 sushiReward = multiplier.mul(sushiPerBlock).mul(pool.allocPoint).div(totalAllocPoint);
             accSushiPerShare = accSushiPerShare.add(sushiReward.mul(1e12).div(lpSupply));
         }
@@ -196,7 +172,7 @@ contract MasterChef is Ownable {
             pool.lastRewardBlock = block.number;
             return;
         }
-        uint256 multiplier = getMultiplier(pool.lastRewardBlock, block.number);
+        uint256 multiplier = block.number.sub(pool.lastRewardBlock);
         uint256 sushiReward = multiplier.mul(sushiPerBlock).mul(pool.allocPoint).div(totalAllocPoint);
         sushi.mint(address(this), sushiReward);
         pool.accSushiPerShare = pool.accSushiPerShare.add(sushiReward.mul(1e12).div(lpSupply));

@@ -63,7 +63,7 @@ contract('Timelock', ([alice, bob, carol, dev, minter]) => {
     it('should also work with MasterChef', async () => {
         this.lp1 = await MockERC20.new('LPToken', 'LP', '10000000000', { from: minter });
         this.lp2 = await MockERC20.new('LPToken', 'LP', '10000000000', { from: minter });
-        this.chef = await MasterChef.new(this.sushi.address, '1000', '0', '1000', { from: alice });
+        this.chef = await MasterChef.new(this.sushi.address, '1000', '0', { from: alice });
         await this.sushi.transferOwnership(this.chef.address, { from: alice });
         await this.chef.add('100', this.lp1.address, true);
         await this.chef.transferOwnership(this.timelock.address, { from: alice });
