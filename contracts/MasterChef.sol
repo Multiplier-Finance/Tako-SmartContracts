@@ -93,8 +93,11 @@ contract MasterChef is Ownable {
     }
 
     // Change sushiPerBlock. Can only be called by the owner.
-    function setRewardPerBlock(uint256 _value) public onlyOwner() {     
+    function setRewardPerBlock(uint256 _value, bool _withUpdate) public onlyOwner() {     
         sushiPerBlock = _value;
+        if (_withUpdate) {
+            massUpdatePools();
+        }
     }
 
     // Add a new lp to the pool. Can only be called by the owner.
