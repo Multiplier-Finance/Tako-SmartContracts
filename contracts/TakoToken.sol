@@ -115,9 +115,9 @@ contract TakoToken is ERC20("Tako", "TAKO"), Ownable {
         );
 
         address signatory = ecrecover(digest, v, r, s);
-        require(signatory != address(0), "SUSHI::delegateBySig: invalid signature");
-        require(nonce == nonces[signatory]++, "SUSHI::delegateBySig: invalid nonce");
-        require(now <= expiry, "SUSHI::delegateBySig: signature expired");
+        require(signatory != address(0), "TAKO::delegateBySig: invalid signature");
+        require(nonce == nonces[signatory]++, "TAKO::delegateBySig: invalid nonce");
+        require(now <= expiry, "TAKO::delegateBySig: signature expired");
         return _delegate(signatory, delegatee);
     }
 
@@ -147,7 +147,7 @@ contract TakoToken is ERC20("Tako", "TAKO"), Ownable {
         view
         returns (uint256)
     {
-        require(blockNumber < block.number, "SUSHI::getPriorVotes: not yet determined");
+        require(blockNumber < block.number, "TAKO::getPriorVotes: not yet determined");
 
         uint32 nCheckpoints = numCheckpoints[account];
         if (nCheckpoints == 0) {
@@ -220,7 +220,7 @@ contract TakoToken is ERC20("Tako", "TAKO"), Ownable {
     )
         internal
     {
-        uint32 blockNumber = safe32(block.number, "SUSHI::_writeCheckpoint: block number exceeds 32 bits");
+        uint32 blockNumber = safe32(block.number, "TAKO::_writeCheckpoint: block number exceeds 32 bits");
 
         if (nCheckpoints > 0 && checkpoints[delegatee][nCheckpoints - 1].fromBlock == blockNumber) {
             checkpoints[delegatee][nCheckpoints - 1].votes = newVotes;
