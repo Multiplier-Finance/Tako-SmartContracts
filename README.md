@@ -4,11 +4,11 @@ https://takoswap.org. Feel free to read the code. More details coming soon.
 
 ## Deployed Contracts / Hash
 
-- TakoToken - https://etherscan.io/token/0x6b3595068778dd592e39a122f4f5a5cf09c90fe2
-- MasterChef - https://etherscan.io/address/0xc2edad668740f1aa35e4d8f227fb8e17dca888cd
-- (Uni|Tako)swapV2Factory - https://etherscan.io/address/0xc0aee478e3658e2610c5f7a4a2e1777ce9e4f2ac
-- (Uni|Tako)swapV2Router02 - https://etherscan.io/address/0xd9e1ce17f2641f24ae83637ab66a2cca9c378b9f
-- (Uni|Tako)swapV2Pair init code hash - `e18a34eb0e04b04f7a0ac29a6e80748dca96319b42c54d679cb821dca90c6303`
+- TakoToken - https://etherscan.io/token/0xd47FF7c7a40273Fd62E0ee1Ffe69EDdb6124eC6D
+- MasterChef - https://etherscan.io/address/0x0c86790545C2A629e2684B958313D001AA33540F
+- (Uni|Tako)swapV2Factory - https://etherscan.io/address/0x2f3Db9ba0fE94A92d706633abC1C3131Fe25d03C
+- (Uni|Tako)swapV2Router02 - https://etherscan.io/address/0xB3f37E28F521671e1F368a1a06DC9Dc7C9914D02
+- (Uni|Tako)swapV2Pair init code hash - `5d954e562938578d0cee57f49334653d78ed1365ef164574c5809c3d430376f5`
 ## License
 
 WTFPL
